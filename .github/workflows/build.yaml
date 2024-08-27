@@ -49,7 +49,7 @@ jobs:
         git config user.email ${{ secrets.email }}
         git config user.name ${{ secrets.name }}
         echo “Working Directory: $(pwd)”
-        # Navigate to the specific Helm chart directory
+        # Navigate to the specific deployment
         cd deployment
        
         # Print values.yaml for debugging before changes
@@ -67,7 +67,7 @@ jobs:
         echo “After modification:”
         cat ${{inputs.app-name}}-deployment.yaml
        
-        git add ${{inputs.app-name}}-deployment.yaml
+        git add "${{inputs.app-name}}-deployment.yaml"
         git commit -m “Update image tag by Github Actions Job change manifest: ${{ github.run_number }}”
         git push origin main
     env:
