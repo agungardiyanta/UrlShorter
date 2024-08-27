@@ -40,7 +40,7 @@ jobs:
     - name: checkout deployment repository
       uses: actions/checkout@v4
       with:
-        repository: agungardiyanta
+        repository: https://github.com/agungardiyanta/UrlShorterDeployment
         token: ${{ secrets.GIT_TOKEN }}
         ref: main
 

@@ -128,5 +128,5 @@ func redirectHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func logRedirection(shortID string) {
-	http.Post(fmt.Sprintf("http://localhost:8081/log/%s", shortID), "application/json", nil)
+	http.Post(fmt.Sprintf("https://localhost:8081/log/%s", shortID), "application/json", nil)
 }
