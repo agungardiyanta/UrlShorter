@@ -10,7 +10,6 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
-	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	"github.com/rs/cors"
 )
@@ -41,8 +40,8 @@ func main() {
     handler := c.Handler(r)
 	r.Post("/log/{shortID}", logHandler)
 	r.Get("/stats/{shortID}", statsHandler)
-	fmt.Println("Running On 8081")
-	http.ListenAndServe(":8081", handler)
+	fmt.Println("Running On 8080")
+	http.ListenAndServe(":8080", handler)
 }
 
 func logHandler(w http.ResponseWriter, r *http.Request) {
