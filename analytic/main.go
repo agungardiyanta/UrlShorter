@@ -18,12 +18,13 @@ import (
 var db *sql.DB
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
-	}
-	// Initialize PostgreSQL connection
-	fmt.Println("DATABASE_URL:", os.Getenv("DATABASE_URL"))
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	log.Fatalf("Error loading .env file: %v", err)
+	// }
+	// // Initialize PostgreSQL connection
+	// fmt.Println("DATABASE_URL:", os.Getenv("DATABASE_URL"))
+	var err error
 	db, err = sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
 		log.Fatal(err)
