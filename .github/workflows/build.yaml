@@ -56,7 +56,12 @@ jobs:
         echo “Before modification:”
         cat ${{inputs.app-name}}-deployment.yaml
        
-        sed "s|image: distucker/${{inputs.app-name}}:|image: distucker/${{inputs.app-name}}:${{github.sha}}|" ${{inputs.app-name}}-deployment.yaml 
+        app_name=${{ inputs.app-name }}  # or set this dynamically as needed
+        new_tag=${{ github.sha }}  # replace with the desired tag, e.g., from a commit SHA or input
+
+        # Use sed to update the image tag in the deployment YAML
+        sed -i "s|image: distucker/${app_name}:.*|image: distucker/${app_name}:${new_tag}|" "${app_name}-deployment.yaml"
+
        
         # Print values.yaml for debugging after changes
         echo “After modification:”
