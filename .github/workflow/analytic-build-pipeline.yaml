@@ -1,0 +1,16 @@
+name: "Analytic Build"
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'analytic/*'
+  workflow_dispatch:
+
+jobs:
+  build-and-deployment:
+    uses: ./.github/workflows/build.yaml
+    secrets: inherit
+    with:
+      app-name: "analytic"
+      context: "./analytic"

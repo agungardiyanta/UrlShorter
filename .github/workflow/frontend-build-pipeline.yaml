@@ -1,0 +1,16 @@
+name: "Frontend Build"
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/*'
+  workflow_dispatch:
+
+jobs:
+  build-and-deployment:
+    uses: ./.github/workflows/build.yaml
+    secrets: inherit
+    with:
+      app-name: "frontend"
+      context: "./frontend"

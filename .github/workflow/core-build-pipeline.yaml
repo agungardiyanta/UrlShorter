@@ -1,0 +1,16 @@
+name: "core Build"
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'core/*'
+  workflow_dispatch:
+
+jobs:
+  build-and-deployment:
+    uses: ./.github/workflows/build.yaml
+    secrets: inherit
+    with:
+      app-name: "core"
+      context: "./core"
