@@ -69,9 +69,8 @@ jobs:
         cat ${{inputs.app-name}}-deployment.yaml
        
         git add "${{inputs.app-name}}-deployment.yaml"
-        git commit -m “Update image tag by Github Actions Job change manifest: ${{ github.run_number }}”
+        git commit -m "Update image tag by Github Actions Job change manifest"
         git push origin main
     env:
         GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
         GIT_PASSWORD: ${{ secrets.GIT_TOKEN }}
-        RUN_NUMBER: ${{ github.run_number }}
