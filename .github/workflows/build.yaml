@@ -75,4 +75,3 @@ jobs:
         GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
         GIT_PASSWORD: ${{ secrets.GIT_TOKEN }}
         RUN_NUMBER: ${{ github.run_number }}
-        ENVIRONMENT: ${{ vars.ENVIRONMENT }}
