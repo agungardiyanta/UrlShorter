@@ -32,11 +32,11 @@ type URL struct {
 
 func main() {
 	// Load environment variables from .env file
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
-	}
-	fmt.Println("DATABASE_URL:", os.Getenv("DATABASE_URL"))
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	log.Fatalf("Error loading .env file: %v", err)
+	// }
+	// fmt.Println("DATABASE_URL:", os.Getenv("DATABASE_URL"))
 	// Initialize PostgreSQL connection
 	db, err = sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
