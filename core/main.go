@@ -13,10 +13,9 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-redis/redis/v8"
 	"github.com/google/uuid"
-	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
-	"github.com/segmentio/ksuid"
 	"github.com/rs/cors"
+	"github.com/segmentio/ksuid"
 )
 
 var (
@@ -38,6 +37,7 @@ func main() {
 	// }
 	// fmt.Println("DATABASE_URL:", os.Getenv("DATABASE_URL"))
 	// Initialize PostgreSQL connection
+	var err error
 	db, err = sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
 		log.Fatal(err)
@@ -52,12 +52,12 @@ func main() {
 
 	r := chi.NewRouter()
 	c := cors.New(cors.Options{
-        AllowedOrigins:   []string{"*"}, // Change this to your frontend URL for production
-        AllowedMethods:   []string{"GET", "POST", "OPTIONS"},
-        AllowedHeaders:   []string{"Content-Type", "Authorization"},
-        AllowCredentials: true,
-    })
-    handler := c.Handler(r)
+		AllowedOrigins:   []string{"*"}, // Change this to your frontend URL for production
+		AllowedMethods:   []string{"GET", "POST", "OPTIONS"},
+		AllowedHeaders:   []string{"Content-Type", "Authorization"},
+		AllowCredentials: true,
+	})
+	handler := c.Handler(r)
 	r.Post("/create", createShortURLHandler)
 	r.Get("/{shortID}", redirectHandler)
 
@@ -86,7 +86,7 @@ func createShortURLHandler(w http.ResponseWriter, r *http.Request) {
 	// Insert the new URL into PostgreSQL
 	_, err := db.Exec("INSERT INTO url_redirects (id, short_url_id, original_url) VALUES ($1, $2, $3)", newUUID, url.ShortID, url.OriginalURL)
 	if err != nil {
-		log.Printf("Error inserting URL into PostgreSQL: %v", err) 
+		log.Printf("Error inserting URL into PostgreSQL: %v", err)
 		http.Error(w, "Failed to create short URL", http.StatusInternalServerError)
 		return
 	}
