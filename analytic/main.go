@@ -15,7 +15,10 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
-var db *sql.DB
+var( 	db *sql.DB
+		rdb *redis.Client
+		ctx = context.Background()
+	)
 
 func main() {
 	var err error
