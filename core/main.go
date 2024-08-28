@@ -92,7 +92,7 @@ func createShortURLHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Cache the new URL in Redis
-	err = rdb.Set(ctx, url.ShortID, url.OriginalURL, 24*time.Hour).Err()
+	err = rdb.Set(ctx, url.ShortID, url.OriginalURL, 1*time.Hour).Err()
 	if err != nil {
 		log.Printf("Failed to cache URL in Redis: %v", err)
 	}
@@ -115,7 +115,7 @@ func redirectHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Cache the result in Redis for future requests
-		rdb.Set(ctx, shortID, originalURL, 24*time.Hour)
+		rdb.Set(ctx, shortID, originalURL, 1*time.Hour)
 	} else if err != nil {
 		http.Error(w, "Error accessing cache", http.StatusInternalServerError)
 		return
