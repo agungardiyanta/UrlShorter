@@ -1,1 +1,1 @@
-export const BaseURL = () => import.meta.env.VITE_API_URL || 'http://localhost:8080';
+export const BaseURL = () => import.meta.env.VITE_API_URL || 'https://dsandbox.online';

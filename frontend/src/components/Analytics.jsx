@@ -11,7 +11,7 @@ const Analytics = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`${BaseURL}/stats/${shortID}`);
+                const response = await fetch(`${BaseURL}/api/analytic/stats/${shortID}`);
                 if (!response.ok) throw new Error('Failed to fetch data');
                 const result = await response.text();
                 setData(result);

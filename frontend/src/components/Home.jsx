@@ -19,7 +19,7 @@ const Home = () => {
             return;
         }
         try {
-            const response = await fetch(`http://localhost:8080/create`, {
+            const response = await fetch(`${BaseURL}/api/core//create`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ original_url: url, short_id: shortID })
