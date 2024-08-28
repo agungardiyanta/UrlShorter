@@ -61,23 +61,33 @@ func logHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func statsHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := context.Background() // Define the context
 	shortID := chi.URLParam(r, "shortID")
 	var count int
+
 	// Check Redis cache first
-	count, err := rdb.Get(ctx, "stats-"+shortID).Result()
+	countStr, err := rdb.Get(ctx, "stats-"+shortID).Result()
 	if err == redis.Nil {
 		// Cache miss: fetch from PostgreSQL
 		err := db.QueryRow("SELECT COUNT(*) FROM url_analytics WHERE short_url_id = $1", shortID).Scan(&count)
 		if err != nil {
 			log.Printf("Error fetching stats: %v", err)
 			http.Error(w, "Failed to get stats", http.StatusInternalServerError)
-		return
+			return
 		}
 		// Cache the result in Redis for future requests
-		rdb.Set(ctx, "stats-"+shortID, count, 1*time.Hour)
+		rdb.Set(ctx, "stats-"+shortID, strconv.Itoa(count), 1*time.Hour)
 	} else if err != nil {
 		http.Error(w, "Error accessing cache", http.StatusInternalServerError)
 		return
+	} else {
+		// Convert the count from string to int
+		count, err = strconv.Atoi(countStr)
+		if err != nil {
+			log.Printf("Error converting cache result to int: %v", err)
+			http.Error(w, "Failed to get stats", http.StatusInternalServerError)
+			return
+		}
 	}
 
 	fmt.Fprintf(w, "URL %s has been accessed %d times", shortID, count)
