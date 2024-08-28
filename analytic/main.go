@@ -12,23 +12,24 @@ import (
 	"github.com/google/uuid"
 	_ "github.com/lib/pq"
 	"github.com/rs/cors"
+	"github.com/go-redis/redis/v8"
 )
 
 var db *sql.DB
 
 func main() {
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	log.Fatalf("Error loading .env file: %v", err)
-	// }
-	// // Initialize PostgreSQL connection
-	// fmt.Println("DATABASE_URL:", os.Getenv("DATABASE_URL"))
 	var err error
 	db, err = sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
+	// Initialize Redis client
+	rdb = redis.NewClient(&redis.Options{
+		Addr: os.Getenv("REDIS_ADDR"),
+		Password: os.Getenv("REDIS_PASS"), // e.g., "localhost:6379"
+	})
+	defer rdb.Close()
 
 	r := chi.NewRouter()
 	c := cors.New(cors.Options{
@@ -58,12 +59,21 @@ func logHandler(w http.ResponseWriter, r *http.Request) {
 
 func statsHandler(w http.ResponseWriter, r *http.Request) {
 	shortID := chi.URLParam(r, "shortID")
-
 	var count int
-	err := db.QueryRow("SELECT COUNT(*) FROM url_analytics WHERE short_url_id = $1", shortID).Scan(&count)
-	if err != nil {
-		log.Printf("Error fetching stats: %v", err)
-		http.Error(w, "Failed to get stats", http.StatusInternalServerError)
+	// Check Redis cache first
+	count, err := rdb.Get(ctx, "stats-"+shortID).Result()
+	if err == redis.Nil {
+		// Cache miss: fetch from PostgreSQL
+		err := db.QueryRow("SELECT COUNT(*) FROM url_analytics WHERE short_url_id = $1", shortID).Scan(&count)
+		if err != nil {
+			log.Printf("Error fetching stats: %v", err)
+			http.Error(w, "Failed to get stats", http.StatusInternalServerError)
+		return
+		}
+		// Cache the result in Redis for future requests
+		rdb.Set(ctx, "stats-"+shortID, count, 1*time.Hour)
+	} else if err != nil {
+		http.Error(w, "Error accessing cache", http.StatusInternalServerError)
 		return
 	}
 
