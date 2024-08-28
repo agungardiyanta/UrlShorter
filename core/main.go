@@ -46,7 +46,8 @@ func main() {
 
 	// Initialize Redis client
 	rdb = redis.NewClient(&redis.Options{
-		Addr: os.Getenv("REDIS_ADDR"), // e.g., "localhost:6379"
+		Addr: os.Getenv("REDIS_ADDR"),
+		Password: os.Getenv("REDIS_PASS"), // e.g., "localhost:6379"
 	})
 	defer rdb.Close()
 
