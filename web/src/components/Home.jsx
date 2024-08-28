@@ -28,7 +28,7 @@ const Home = () => {
             const data = await response.json();
             setResult({
                 shortID: data.short_id,
-                shortURL: `${BaseURL}/${data.short_id}`
+                shortURL: `${BaseURL}/s/${data.short_id}`
             });
         } catch (error) {
             setError(error.message);
