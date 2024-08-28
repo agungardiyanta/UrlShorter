@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../App.css'; 
-import { BaseURL } from '../env';
+const BaseURL = 'https://dsandbox.online'
 
 const Analytics = () => {
     const { shortID } = useParams();
