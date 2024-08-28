@@ -128,5 +128,5 @@ func redirectHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func logRedirection(shortID string) {
-	http.Post(fmt.Sprintf("https://dsandbox.online/api/analytic/log/%s", shortID), "application/json", nil)
+	http.Post(fmt.Sprintf("http:analytic-svc.default.svc.cluster.local:80/log/%s", shortID), "application/json", nil)
 }
