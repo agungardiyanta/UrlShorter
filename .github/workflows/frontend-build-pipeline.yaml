@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - 'frontend/*'
+      - 'web/*'
   workflow_dispatch:
 
 jobs:
@@ -13,4 +13,4 @@ jobs:
     secrets: inherit
     with:
       app-name: "frontend"
-      context: "./frontend"
+      context: "./web"
