@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
-const BaseURL = 'https://dsandbox.online'
+const BaseURL = process.env.REACT_APP_BASE_URL || 'https://agungardiyanta.web.id';
 const Home = () => {
     const [url, setURL] = useState('');
     const [shortID, setShortID] = useState('');
