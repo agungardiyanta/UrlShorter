@@ -46,7 +46,7 @@ func main() {
 
 	// Initialize Redis client
 	rdb = redis.NewClient(&redis.Options{
-		Addr: os.Getenv("REDIS_ADDR"),
+		Addr:     os.Getenv("REDIS_ADDR"),
 		Password: os.Getenv("REDIS_PASS"), // e.g., "localhost:6379"
 	})
 	defer rdb.Close()
@@ -129,5 +129,5 @@ func redirectHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func logRedirection(shortID string) {
-	http.Post(fmt.Sprintf("http://analytic-svc.default.svc.cluster.local:80/log/%s", shortID), "application/json", nil)
+	http.Post(fmt.Sprintf("http://analytic-svc.url-shorter.svc.cluster.local:80/log/%s", shortID), "application/json", nil)
 }
