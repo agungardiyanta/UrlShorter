@@ -1,0 +1,23 @@
+name: api build and deployment
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/api/**"
+      - "go.mod"
+      - "go.sum"
+      - ".github/workflows/api-build-pipeline.yaml"
+      - ".github/workflows/build.yaml"
+  workflow_dispatch:
+
+jobs:
+  build-and-deployment:
+    uses: ./.github/workflows/build.yaml
+    secrets: inherit
+    with:
+      app-name: urlshorter-api
+      context: .
+      dockerfile: ./apps/api/Dockerfile
+      deployment-file: deployment/urlshorter-api-deployment.yaml

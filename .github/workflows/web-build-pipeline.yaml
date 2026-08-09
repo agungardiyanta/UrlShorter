@@ -1,0 +1,21 @@
+name: web build and deployment
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/web/**"
+      - ".github/workflows/web-build-pipeline.yaml"
+      - ".github/workflows/build.yaml"
+  workflow_dispatch:
+
+jobs:
+  build-and-deployment:
+    uses: ./.github/workflows/build.yaml
+    secrets: inherit
+    with:
+      app-name: urlshorter-web
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+      deployment-file: deployment/urlshorter-web-deployment.yaml
