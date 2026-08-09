@@ -1,0 +1,12 @@
+.env
+.DS_Store
+
+# Go
+bin/
+coverage.out
+
+# Web
+apps/web/node_modules/
+apps/web/dist/
+apps/web/.vite/
+apps/web/*.tsbuildinfo
